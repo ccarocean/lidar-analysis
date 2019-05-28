@@ -26,9 +26,9 @@ def main():
     parser.add_argument('location', type=str, help="Location ('harv' or 'cata')")
     parser.add_argument('-f', '--full', action="store_true", default=None, help="Save full six minute dataset to file")
     parser.add_argument('-d', '--oneday', type=arg2dt, default=None, help="Single Date in YYYYMMDD format")
-    parser.add_argument('-c', '--change', nargs=2, type=str, help="Change last day run or last coops month added. \
-                        First argument must be 'lastday' or 'lastcoops' and second argument must be day in \
-                        YYYYMMDD format or month in YYYYMM format.")
+    parser.add_argument('-l', '--lastday', type=str, default=None, help="Change last day run. Argument must be day in YYYYMMDD format")
+    parser.add_argument('-c', '--coops', type=str, default=None, help="Change last coops month run. Argument must be day in YYYYMM format")
+
 
     args = parser.parse_args()
     loc = args.location
@@ -65,14 +65,26 @@ def main():
         with open(os.path.join(req_fileDir, 'lastday_harv.txt')) as f:
             f.write('20160425')
 
-    # If change dates option is called
-    if args.change is not None:
-        if args.change[0] == 'lastday':
-            chng.chng_day(args.change[1], loc, req_fileDir)
-        elif args.change[0] == 'lastcoops':
-            chng.chng_coops(args.change[1], loc, req_fileDir)
-        else:
-            print('First Argument must be "lastday" or "lastcoops". ')
+    # If change last day option is called
+    if args.lastday is not None:
+        try:
+            tmp = dt.datetime(int(args.lastday[0:4]), int(args.lastday[4:6]), int(args.lastday[6:8]))
+            assert(len(args.lastday) == 8)
+        except:
+            print('Input to new last day must be a working date.')
+            sys.exit(0)
+        chng.chng_day(args.lastday, loc, req_fileDir)
+        sys.exit(0)
+
+    # If change coops month option is called
+    if args.coops is not None:
+        try:
+            tmp = dt.datetime(int(args.coops[0:4]), int(args.coops[4:6]), 1)
+            assert (len(args.coops) == 6)
+        except:
+            print('Input to new coops month must be a working month.')
+            sys.exit(0)
+        chng.chng_coops(args.coops, loc, req_fileDir)
         sys.exit(0)
 
     # If overflight averaging is required

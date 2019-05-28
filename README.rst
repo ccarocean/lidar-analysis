@@ -12,54 +12,51 @@ positional arguments:
 optional arguments:
   -h, --help                            Show help message and exit
   -s DATE                               Start Date in YYYYMMDD format
-  -e DATE                               End Date in YYYYMMDD
-                                        format
-  -o OVFILE                             File with overflight times.
+  -e DATE                               End Date in YYYYMMDD format
+  -o OVFILE                             File with overflight times
   -f, --full                            Save full six minute dataset to file
   -d DATE                               Single Date in YYYYMMDD format
-  -c FILE VALUE                         Change last day run or last coops month added. First
-                                        argument must be 'lastday' or 'lastcoops' and second
-                                        argument must be day in YYYYMMDD format or month in
-                                        YYYYMM format.
+  -l DAY                                Change last day run. Argument must be day in YYYYMMDD format
+  -c DAY                                Change last coops month run. Argument must be month in YYYYMM format
 
 Notes:
-    INPUT DATES MUST BE IN NUMERIC YYYYMMDD FORMAT
-    OVERFLIGHT DATES MUST BE ABLE TO BE READ BY PANDAS DATE PARSER
-    Final Data is stored in harv_YYYYMM.csv and cata_YYYYMM.csv.
+   - INPUT DATES MUST BE IN NUMERIC YYYYMMDD FORMAT
+   - OVERFLIGHT DATES MUST BE ABLE TO BE READ BY PANDAS DATE PARSER
+   - Final Data is stored in harv_YYYYMM.csv and cata_YYYYMM.csv.
 
 How to run
 ----------
-   Running Ranges of dates:
-If only start date is specified, the function is run from this start
-date through yesterday, and yesterdays date is written to
-"lastday_harv.txt"or "lastday_cata.txt" depending on the location
-chosen. If only the end date is specified, the initial date is read
-from one of these files and the function is run through the end
-date which is written to this file. If neither is specified, the function
-is run from the date in the file until yesterday, and yesterdays date
-is written to the file. If both are specified, the range is run and
-the file with the last run date ("lastday_harv.txt"/"lastday_cata.txt")
-is not read or written.
+Running Ranges of dates:
+    If only start date is specified, the function is run from this start
+    date through yesterday, and yesterdays date is written to
+    "lastday_harv.txt"or "lastday_cata.txt" depending on the location
+    chosen. If only the end date is specified, the initial date is read
+    from one of these files and the function is run through the end
+    date which is written to this file. If neither is specified, the function
+    is run from the date in the file until yesterday, and yesterdays date
+    is written to the file. If both are specified, the range is run and
+    the file with the last run date ("lastday_harv.txt"/"lastday_cata.txt")
+    is not read or written.
 
-   Running single dates:
-If a single date is specified (-d), the file ("lastday_harv.txt" or
-"lastday_cata.txt") is not read or written. Only the single date is run.
+Running single dates:
+    If a single date is specified (-d), the file ("lastday_harv.txt" or
+    "lastday_cata.txt") is not read or written. Only the single date is run.
 
-   Running Overflight times:
-If the overflight time file is specified, The function will be run for
-each date/time in ovfile. It will average a 6-minute window around the
-overflight to give an accurate reading.
+Running Overflight times:
+    If the overflight time file is specified, The function will be run for
+    each date/time in ovfile. It will average a 6-minute window around the
+    overflight to give an accurate reading.
 
-   Creating Full dataset:
-If -f is specified, all of the available final data files
-(data/harv_YYYYMM.csv or data/cata_YYYYMM.csv) are combined into one
-(data/harv_all.csv or data/cata_all.csv).
-This can be run with any other option.
+Creating Full dataset:
+    If -f is specified, all of the available final data files
+    (data/harv_YYYYMM.csv or data/cata_YYYYMM.csv) are combined into one
+    (data/harv_all.csv or data/cata_all.csv).
+    This can be run with any other option.
 
 Related Files
 -------------
 
-raw data in $LIDARDATAFILE *OR* /srv/data/harvest/*loc*/uls/
+raw data in $LIDARDATAFILE **OR** /srv/data/harvest/*loc*/uls/
 
 bias_harv.txt or bias_cata.txt in ./lidar_analysis_files
 
@@ -90,9 +87,9 @@ Final data in data/harv_YYYYMM.csv
   - l_amp    (Photons)  Mean LiDAR amplitude meas. in 6 minute window
   - l_Hs     (Meters)   LiDAR Significant Wave Height (4*STD)
   - l        (Meters)   LiDAR measurement minus bias with Bubbler
-  - l_ssh    (Meters)   20.150 - l - 0.05 (harv only)
-  - N1_1_ssh (Meters)   20.150 - N1_1 - 0.05 (harv only)
-  - Y1_1_ssh (Meters)   20.150 - Y1_1 - 0.05 (harv only)
+  - l_ssh    (Meters)   20.150 - l - 0.05
+  - N1_1_ssh (Meters)   20.150 - N1_1 - 0.05
+  - Y1_1_ssh (Meters)   20.150 - Y1_1 - 0.05
 
 Final data in data/cata_YYYYMM.csv
   - time                Date and Time of Measurement
