@@ -10,20 +10,16 @@ positional arguments:
   location              Location ('harv' or 'cata')
 
 optional arguments:
-  -h, --help            show this help message and exit
-  -s DATE, --start DATE
-                        Start Date in YYYYMMDD format
-  -e DATE, --end DATE     End Date in YYYYMMDD format
-  -o OVFILE, --ovfile OVFILE
-                        File with overflight times.
-  -f, --full            Save full six minute dataset to file
-  -d DATE, --oneday DATE
-                        Single Date in YYYYMMDD format
-  -c FILE VALUE, --change FILE VALUE
-                        Change last day run or last coops month added. First
-                        argument must be 'lastday' or 'lastcoops' and second
-                        argument must be day in YYYYMMDD format or month in
-                        YYYYMM format.
+  -h, --help                            Show help message and exit
+  -s DATE, --start DATE                 Start Date in YYYYMMDD format
+  -e DATE, --end DATE                   End Date in YYYYMMDD format
+  -o OVFILE, --ovfile OVFILE            File with overflight times.
+  -f, --full                            Save full six minute dataset to file
+  -d DATE, --oneday DATE                Single Date in YYYYMMDD format
+  -c FILE VALUE, --change FILE VALUE    Change last day run or last coops month added. First
+                                        argument must be 'lastday' or 'lastcoops' and second
+                                        argument must be day in YYYYMMDD format or month in
+                                        YYYYMM format.
 
 Notes:
 INPUT DATES MUST BE IN NUMERIC YYYYMMDD FORMAT
