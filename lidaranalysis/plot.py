@@ -21,7 +21,7 @@ def load_harv(datadir_harv):
         files.sort()
         for f in files:
             if f.startswith("harv_2"):
-                tmp = loading.load_output(dt.datetime.strptime(f, 'harv_%Y%m'), 'harv', datadir_harv)
+                tmp = loading.load_output(dt.datetime.strptime(f, 'harv_%Y%m.csv'), 'harv', datadir_harv)
                 data_h = pd.concat([data_h, tmp])
                 del tmp
     return data_h
@@ -35,7 +35,7 @@ def load_cata(datadir_cata):
         files.sort()
         for f in files:
             if f.startswith("cata_2"):
-                tmp = loading.load_output(dt.datetime.strptime(f, 'harv_%Y%m'), 'cata', datadir_cata)
+                tmp = loading.load_output(dt.datetime.strptime(f, 'cata_%Y%m.csv'), 'cata', datadir_cata)
                 data_c = pd.concat([data_c, tmp])
                 del tmp
     return data_c
@@ -53,9 +53,8 @@ def plot_harv(td, data_h, save_dir):
     data_rec_h = data_h[ind]
 
     # Plot All Harvest Pulse Width Data
-    print("Plotting All Harvest Pulse Width...")
     plt.figure(figsize=(12, 10), dpi=80, facecolor='w')
-    plt.plot(data_h.index, data_h['l_pw'], 'bo', markersize=3)
+    plt.plot(data_h.index, data_h['l_amp'], 'bo', markersize=3)
     plt.title('All Harvest LIDAR Pulse Width Data')
     plt.xticks(rotation=90)
     plt.grid(b=True)
@@ -64,7 +63,6 @@ def plot_harv(td, data_h, save_dir):
     plt.savefig(os.path.join(save_dir, 'Harvest_PW.png'), bbox_inches='tight')
 
     # Plot all Harvest Height Data
-    print("Plotting All Harvest Height Data...")
     plt.figure(figsize=(12, 10), dpi=80, facecolor='w')
     plt.plot(data_h.index, data_h['l_mean'], 'bo', markersize=3)
     plt.title('All Harvest LIDAR Height Data')
@@ -75,7 +73,6 @@ def plot_harv(td, data_h, save_dir):
     plt.savefig(os.path.join(save_dir, 'Harvest_All.png'), bbox_inches='tight')
 
     # Plot all harvest height data without outliers
-    print("Plotting All Harvest Height Data without Outliers...")
     plt.figure(figsize=(12, 10), dpi=80, facecolor='w')
     plt.plot(data_h.index, data_h['l_mean'], 'bo', markersize=3)
     plt.title('All Harvest LIDAR Height Data - No Outliers')
@@ -87,7 +84,6 @@ def plot_harv(td, data_h, save_dir):
     plt.savefig(os.path.join(save_dir, 'Harvest_All_NO.png'), bbox_inches='tight')
 
     # Plot weeks harvest height data
-    print("Plotting This Week's Harvest Height Data...")
     plt.figure(figsize=(12, 10), dpi=80, facecolor='w')
     plt.plot(data_rec_h.index, data_rec_h['l_mean'], 'bo')
     plt.title('Recent Harvest LIDAR Height Data')
@@ -98,7 +94,6 @@ def plot_harv(td, data_h, save_dir):
     plt.savefig(os.path.join(save_dir, 'Harvest_Recent.png'), bbox_inches='tight')
 
     # Plot yesterday's harvest height data
-    print("Plotting Yesterday's Harvest Height Data...")
     plt.figure(figsize=(12, 10), dpi=80, facecolor='w')
     plt.plot(data_today_h.index, data_today_h['l_mean'], 'bo')
     plt.title('Today\'s Harvest LIDAR Height Data')
@@ -121,9 +116,8 @@ def plot_cata(td, data_c, save_dir):
     data_rec_c = data_c[ind]
 
     # Plot Catalina Pulse Width Data
-    print("Plotting Catalina Pulse Width...")
     plt.figure(figsize=(12, 10), dpi=80, facecolor='w')
-    plt.plot(data_c.index, data_c['l_pw'], 'ro', markersize=3)
+    plt.plot(data_c.index, data_c['l_amp'], 'ro', markersize=3)
     plt.title('All Catalina LIDAR Pulse Width Data')
     plt.xticks(rotation=90)
     plt.grid(b=True)
@@ -132,7 +126,6 @@ def plot_cata(td, data_c, save_dir):
     plt.savefig(os.path.join(save_dir, 'Catalina_PW.png'), bbox_inches='tight')
 
     # Plot All Catalina Height Data
-    print("Plotting Catalina Height...")
     plt.figure(figsize=(12, 10), dpi=80, facecolor='w')
     plt.plot(data_c.index, data_c['l_mean'], 'ro', markersize=3)
     plt.title('All Catalina LIDAR Height Data')
@@ -143,7 +136,6 @@ def plot_cata(td, data_c, save_dir):
     plt.savefig(os.path.join(save_dir, 'Catalina_All.png'), bbox_inches='tight')
 
     # Plot Week Catalina Height
-    print("Plotting This Week's Catalina Height Data...")
     plt.figure(figsize=(12, 10), dpi=80, facecolor='w')
     plt.plot(data_rec_c.index, data_rec_c['l_mean'], 'ro')
     plt.title('Recent Catalina LIDAR Height Data')
@@ -154,7 +146,6 @@ def plot_cata(td, data_c, save_dir):
     plt.savefig(os.path.join(save_dir, 'Catalina_Recent.png'), bbox_inches='tight')
 
     # Plot Day's Catalina Height
-    print("Plotting Yesterday's Catalina Height Data...")
     plt.figure(figsize=(12, 10), dpi=80, facecolor='w')
     plt.plot(data_today_c.index, data_today_c['l_mean'], 'ro')
     plt.title('Today\'s Catalina LIDAR Height Data')
@@ -167,7 +158,6 @@ def plot_cata(td, data_c, save_dir):
 
 def plot_corr(data_h, data_c, save_dir):
     # Plot harvest vs catalina scatter
-    print("Plotting Harvest vs. Catalina Scatter...")
     plt.figure(figsize=(12, 10), dpi=80, facecolor='w')
     plt.plot(data_h['l_mean'][data_c.index], data_c['l_mean'], 'bo')
     plt.title('Scatter Harvest vs. Catalina')
@@ -179,7 +169,6 @@ def plot_corr(data_h, data_c, save_dir):
     plt.savefig(os.path.join(save_dir, 'Harv_Cata_Scatter.png'), bbox_inches='tight')
 
     # Plot harvest vs catalina scatter without outliers
-    print("Plotting Harvest vs. Catalina Scatter without outliers...")
     plt.figure(figsize=(12, 10), dpi=80, facecolor='w')
     plt.plot(data_h['l_mean'][data_c.index], data_c['l_mean'], 'bo')
     plt.title('Scatter Harvest vs. Catalina - No Outliers')
@@ -189,24 +178,3 @@ def plot_corr(data_h, data_c, save_dir):
     plt.xlabel('Harvest Distance from LIDAR (m)')
     plt.ylabel('Catalina Distance from LIDAR (m)')
     plt.savefig(os.path.join(save_dir, 'Harv_Cata_Scatter_NO.png'), bbox_inches='tight')
-
-
-if __name__ == "__main__":
-    print("Go Buffs")
-    save_dir = '/home/addodge/Documents/Harvest_LiDAR/PlotsLiDAR'
-    datadir_harv = os.path.join('/', 'srv', 'data', 'harvest', 'harv', 'six_minute')
-    datadir_cata = os.path.join('/', 'srv', 'data', 'harvest', 'cata', 'six_minute')
-
-    # Find Date
-    td = dt.datetime.utcnow()
-    td = td - dt.timedelta(days=1, hours=td.hour,
-                           minutes=td.minute, seconds=td.second, microseconds=td.microsecond)
-    print('Yesterday: ', td)
-
-    data_h = load_harv(datadir_harv)
-    data_c = load_cata(datadir_cata)
-    plot_harv(td, data_h, save_dir)
-    plot_cata(td, data_c, save_dir)
-    plot_corr(data_h, data_c, save_dir)
-
-    print("Done.")

@@ -6,7 +6,7 @@
 ############################################################################################################
 import datetime as dt
 import os
-from . import avg, combine, overflight, chng
+from . import avg, combine, overflight, chng, plot
 import sys
 import argparse
 
@@ -23,63 +23,70 @@ def main():
     parser.add_argument('-s', '--start', type=arg2dt, default=None, help='Start Date in YYYYMMDD format')
     parser.add_argument('-e', '--end', type=arg2dt, default=None, help='End Date in YYYYMMDD format')
     parser.add_argument('-o', '--ovfile', type=str, default=None, help="File with overflight times.")
-    parser.add_argument('location', type=str, help="Location ('harv' or 'cata')")
+    parser.add_argument('-l', '--location', type=str, default=None,
+                        help="Location ('harv' or 'cata'). Required for all but plotting option.")
     parser.add_argument('-f', '--full', action="store_true", default=None,
                         help="Save all six minute data to single file (harv_all.csv or cata_all.csv)")
     parser.add_argument('-d', '--oneday', type=arg2dt, default=None, help="Single Date in YYYYMMDD format")
-    parser.add_argument('-l', '--lastday', type=str, default=None,
+    parser.add_argument('-u', '--lastday', type=str, default=None,
                         help="Update last day run in file. Argument must be day in YYYYMMDD format")
     parser.add_argument('-c', '--coops', type=str, default=None,
                         help="Update last coops month run in file. Argument must be day in YYYYMM format")
     parser.add_argument('--out', type=str, default=None,
                         help="Change directory of output six minute data. Default is "
                              "/srv/data/harvest/[harv or cata]/six_minute")
+    parser.add_argument('-p', '--plot', action="store_true", default=None,
+                        help="Save Plots of data to /srv/data/harvest/plots. "
+                             "Location does not matter; it will plot both.")
 
     args = parser.parse_args()
+    if (not bool(args.plot)) and (not bool(args.location)):
+        parser.error('"location" is required unless plotting. ')
+
     loc = args.location
 
     # Define directories
     datafile = os.getenv('LIDARDATAFILE', os.path.join('/', 'srv', 'data', 'harvest'))
-    rawdir = os.path.join(datafile, loc, 'uls')
-    coopsdir = os.path.join(datafile, loc, 'co-ops')
-    if args.out is None:
-        outdir = os.path.join(datafile, loc, 'six_minute')
-    else:
-        outdir = args.out
-    req_filedir = os.path.join(datafile, 'lidar_analysis_files')
-    ov_outfile = os.path.join(datafile, loc, 'lidardata_overflights.csv')
+    if loc is not None:
+        rawdir = os.path.join(datafile, loc, 'uls')
+        coopsdir = os.path.join(datafile, loc, 'co-ops')
+        if args.out is None:
+            outdir = os.path.join(datafile, loc, 'six_minute')
+        else:
+            outdir = args.out
+        req_filedir = os.path.join(datafile, 'lidar_analysis_files')
+        ov_outfile = os.path.join(datafile, loc, 'lidardata_overflights.csv')
+    if args.plot is True:
+        plot_dir = os.path.join(datafile, 'plots')
 
     # Initialize
     write_day = True
     data_yest = None
 
-    # If required files don't exist, write the first possible day/month to them so that the program
-    #       will run all data
-    if not os.path.isdir(req_filedir):
-        print("Writing required files. ")
-        os.mkdir(req_filedir)
-        with open(os.path.join(req_filedir, 'bias_cata.txt')) as f:
-            f.write('0')
-        with open(os.path.join(req_filedir, 'bias_harv.txt')) as f:
-            f.write('0')
-        with open(os.path.join(req_filedir, 'lastcoopsmonth_cata.txt')) as f:
-            f.write('201705')
-        with open(os.path.join(req_filedir, 'lastcoopsmonth_harv.txt')) as f:
-            f.write('201603')
-        with open(os.path.join(req_filedir, 'lastday_cata.txt')) as f:
-            f.write('20170603')
-        with open(os.path.join(req_filedir, 'lastday_harv.txt')) as f:
-            f.write('20160425')
+    # If plotting option is called
+    if args.plot is True:
+        datadir_harv = os.path.join(datafile, 'harv', 'six_minute')
+        datadir_cata = os.path.join(datafile, 'cata', 'six_minute')
+        # Find Date
+        td = dt.datetime.utcnow()
+        td = td - dt.timedelta(days=1, hours=td.hour,
+                               minutes=td.minute, seconds=td.second, microseconds=td.microsecond)
+        data_h = plot.load_harv(datadir_harv)
+        data_c = plot.load_cata(datadir_cata)
+        plot.plot_harv(td, data_h, plot_dir)
+        plot.plot_cata(td, data_c, plot_dir)
+        plot.plot_corr(data_h, data_c, plot_dir)
+        sys.exit(0)
 
     # If change last day option is called
-    if args.last_day is not None:
+    if args.lastday is not None:
         try:
-            tmp = dt.datetime(int(args.last_day[0:4]), int(args.last_day[4:6]), int(args.last_day[6:8]))
-            assert (len(args.last_day) == 8)
+            tmp = dt.datetime(int(args.lastday[0:4]), int(args.lastday[4:6]), int(args.lastday[6:8]))
+            assert (len(args.lastday) == 8)
         except:
             print('Input to new last day must be a working date.')
             sys.exit(0)
-        chng.chng_day(args.last_day, loc, req_filedir)
+        chng.chng_day(args.lastday, loc, req_filedir)
         sys.exit(0)
 
     # If change coops month option is called
