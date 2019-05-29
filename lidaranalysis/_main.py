@@ -27,7 +27,7 @@ def main():
     parser.add_argument('-f', '--full', action="store_true", default=None,
                         help="Save all six minute data to single file (harv_all.csv or cata_all.csv)")
     parser.add_argument('-d', '--oneday', type=arg2dt, default=None, help="Single Date in YYYYMMDD format")
-    parser.add_argument('-l', '--last_day', type=str, default=None,
+    parser.add_argument('-l', '--lastday', type=str, default=None,
                         help="Update last day run in file. Argument must be day in YYYYMMDD format")
     parser.add_argument('-c', '--coops', type=str, default=None,
                         help="Update last coops month run in file. Argument must be day in YYYYMM format")

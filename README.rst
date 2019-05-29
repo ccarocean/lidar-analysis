@@ -7,19 +7,27 @@ Options
 -------
 
 positional arguments:
-  location ('harv' or 'cata')
+  location              Location ('harv' or 'cata')
 
 optional arguments:
-  -h, --help                            Show help message and exit
-  -s DATE                               Start Date in YYYYMMDD format
-  -e DATE                               End Date in YYYYMMDD format
-  -o OVFILE                             File with overflight times
-  -f, --full                            Save full six minute dataset to file
-  -d DATE                               Single Date in YYYYMMDD format
-  -l DAY                                Change last day run. Argument must be day in YYYYMMDD format
-  -c DAY                                Change last coops month run. Argument must be month in YYYYMM format
-  --out
-
+  -h, --help            show this help message and exit
+  -s START, --start START
+                        Start Date in YYYYMMDD format
+  -e END, --end END     End Date in YYYYMMDD format
+  -o OVFILE, --ovfile OVFILE
+                        File with overflight times.
+  -f, --full            Save all six minute data to single file (harv_all.csv
+                        or cata_all.csv)
+  -d ONEDAY, --oneday ONEDAY
+                        Single Date in YYYYMMDD format
+  -l LAST_DAY, --lastday LASTDAY
+                        Update last day run in file. Argument must be day in
+                        YYYYMMDD format
+  -c COOPS, --coops COOPS
+                        Update last coops month run in file. Argument must be
+                        day in YYYYMM format
+  --out OUT             Change directory of output six minute data. Default is
+                        /srv/data/harvest/[harv or cata]/six_minute
 Notes:
    - INPUT DATES MUST BE IN NUMERIC YYYYMMDD FORMAT
    - OVERFLIGHT DATES MUST BE ABLE TO BE READ BY PANDAS DATE PARSER
