@@ -41,7 +41,7 @@ def main():
         outDir = os.path.join(dataFile, loc, 'six_minute')
     else:
         outDir = args.out
-    req_fileDir = 'lidar_analysis_files'
+    req_fileDir = os.path.join(dataFile, 'lidar_analysis_files')
     ov_outfile = os.path.join(dataFile, loc, 'lidardata_overflights.csv')
 
     # Initialize
