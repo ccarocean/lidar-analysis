@@ -28,6 +28,7 @@ def main():
     parser.add_argument('-d', '--oneday', type=arg2dt, default=None, help="Single Date in YYYYMMDD format")
     parser.add_argument('-l', '--lastday', type=str, default=None, help="Change last day run. Argument must be day in YYYYMMDD format")
     parser.add_argument('-c', '--coops', type=str, default=None, help="Change last coops month run. Argument must be day in YYYYMM format")
+    parser.add_argument('--out', type=str, default=None, help="Change directory of output six minute data")
 
     args = parser.parse_args()
     loc = args.location
@@ -35,12 +36,13 @@ def main():
     # Define directories
     dataFile = os.getenv('LIDARDATAFILE', os.path.join('/', 'srv', 'data', 'harvest'))
     rawDir = os.path.join(dataFile, loc,  'uls')
-    fileDir = os.path.dirname(os.path.realpath('__file__'))
-    homeDir = os.path.join('/', 'home', 'addodge', 'Documents', 'Harvest_LiDAR')
-    coopsDir = os.path.join(homeDir, 'co-ops')
-    outDir = os.path.join(homeDir, 'data')
-    req_fileDir = os.path.join(homeDir, 'LidarAnalysis', 'lidar_analysis_files')
-    ov_outfile = os.path.join(fileDir, 'lidardata_overflights_' + loc + '.csv')
+    coopsDir = os.path.join(dataFile, loc, 'co-ops')
+    if args.out is None:
+        outDir = os.path.join(dataFile, loc, 'six_minute')
+    else:
+        outDir = args.out
+    req_fileDir = 'lidar_analysis_files'
+    ov_outfile = os.path.join(dataFile, loc, 'lidardata_overflights.csv')
 
     # Initialize
     writeDay = True
