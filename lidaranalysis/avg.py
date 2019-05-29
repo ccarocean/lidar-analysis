@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 from scipy import stats
 import datetime as dt
-import os, sys, gc
+import os, sys
 from dateutil.relativedelta import relativedelta
 from . import loading, combine, overflight, reg, avg
 
@@ -42,6 +42,7 @@ class lidarData:
                 raw1 = pd.DataFrame()
         else:
             raw1 = self.dataYest
+            raw1.index = raw1.index - 24*60*60
         raw2 = loading.load_raw(self.td, self.rawDir, self.loc)
         if raw2 is None:
             print('Data file does not exist.')
@@ -57,8 +58,6 @@ class lidarData:
             self.data = self.sixminavg(raw, data, ind)  # call averaging function
             ind = raw.index > 24*60*60
             self.data_today = raw[ind]
-            del raw, data, ind
-            gc.collect()
 
     def sixminavg(self, raw, data, ind):
         """ Averaging and Data Merging Function. """
@@ -108,8 +107,6 @@ class lidarData:
                     data.loc[t, 'l_ssh'] = 20.150 - data.loc[t, 'l'] - 0.05
                     data.loc[t, 'N1_1_ssh'] = data.loc[t, 'N1_1'] - 0.05
                     data.loc[t, 'Y1_1_ssh'] = 20.150 - data.loc[t, 'Y1_1'] - 0.05
-            del r_range, r_amp, t, t1, t2, ind2, std_int, mean_int, l_r
-            gc.collect()  # reduce memory usage
         return data
 
     def createFile(self, data):
@@ -152,8 +149,6 @@ class lidarData:
             data_new.set_index('time', inplace=True)  # set time as index
             data = pd.concat([data_new, data],
                              sort=True)  # combine new dataframe with existing dataframe of final data from csv
-        del data_new
-        gc.collect()  # reduce memory usage
         return data
 
     def addcoops(self, d):

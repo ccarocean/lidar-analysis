@@ -56,7 +56,7 @@ Creating Full dataset:
 Related Files
 -------------
 
-raw data in $LIDARDATAFILE **OR** /srv/data/harvest/*loc*/uls/
+raw data in $LIDARDATAFILE **OR** /srv/data/harvest/**loc**/uls/
 
 bias_harv.txt or bias_cata.txt in ./lidar_analysis_files
 

@@ -29,7 +29,6 @@ def main():
     parser.add_argument('-l', '--lastday', type=str, default=None, help="Change last day run. Argument must be day in YYYYMMDD format")
     parser.add_argument('-c', '--coops', type=str, default=None, help="Change last coops month run. Argument must be day in YYYYMM format")
 
-
     args = parser.parse_args()
     loc = args.location
 
