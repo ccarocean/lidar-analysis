@@ -101,14 +101,14 @@ def main():
     # If only one day is being run
     if args.oneday is not None:
         # Create class for averaging day
-        todayClass = avg.lidarData(args.oneday, loc, rawDir, outDir, coopsDir, dataYest)
+        todayClass = avg.lidarData(args.oneday, loc, rawDir, outDir, coopsDir, dataYest, req_fileDir)
         if todayClass.mark:  # if there is data
             todayClass.data.to_csv(os.path.join(outDir, str(loc) + '_%s.csv' % args.oneday.strftime('%Y%m')),
                                    na_rep='NaN')  # write to file
             print('Writing Data to:', os.path.join(outDir, str(loc) + '_%s.csv' % args.oneday.strftime('%Y%m')))
         print('-------------------------------------')
         if args.full:  # Combine entire dataset into one file
-            combine.combinedata(loc, outDir)
+            combine.combinedata(loc, outDir, req_fileDir)
         sys.exit(0)
 
     # If start and end are specified, don't write day to last day file
@@ -136,12 +136,12 @@ def main():
     if lastDay < currDay:
         print('Data is up to date. ')
         if args.full is True:
-            combine.combinedata(loc, outDir)
+            combine.combinedata(loc, outDir, req_fileDir)
         sys.exit(0)
 
     # Run loop over all days requested
     while lastDay >= currDay:  # while current running day is before the final day
-        dayClass = avg.lidarData(currDay, loc, rawDir, outDir, coopsDir, dataYest)
+        dayClass = avg.lidarData(currDay, loc, rawDir, outDir, coopsDir, dataYest, req_fileDir)
         if dayClass.mark is True:  # if there is data
             dayClass.data.to_csv(os.path.join(outDir, str(loc) + '_%s.csv' % currDay.strftime('%Y%m')),
                                  na_rep='NaN')  # write to file
@@ -160,4 +160,4 @@ def main():
 
     # If called, combine all data into one file
     if args.full:
-        combine.combinedata(loc, outDir)
+        combine.combinedata(loc, outDir, req_fileDir)

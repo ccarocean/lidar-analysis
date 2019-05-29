@@ -4,10 +4,10 @@ import datetime as dt
 from . import loading
 
 #################### Combine Data ##########################################################################
-def combinedata(loc, outDir):
+def combinedata(loc, outDir, req_fileDir):
     """ Function for combining all LiDAR data into one csv file """
     print('Combining All Data:')
-    fileDir = os.path.dirname(os.path.realpath('__file__'))
+
     data = pd.DataFrame()
     for root, dirs, files in os.walk(outDir):
         files.sort()
@@ -21,7 +21,7 @@ def combinedata(loc, outDir):
     if loc == 'cata':
         bias = (data['l_mean'] - data['A1']).mean()
 
-    file = open(os.path.join(fileDir, 'lidar_analysis_files', 'bias_' + str(loc) + '.txt'), 'w')
+    file = open(os.path.join(req_fileDir, 'lidar_analysis_files', 'bias_' + str(loc) + '.txt'), 'w')
     file.write(str(bias))
     file.close()
     print('Bias = ' + str(bias) + ' m' + ', Written to bias_' + str(loc) + '.txt')

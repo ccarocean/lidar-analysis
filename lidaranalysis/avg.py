@@ -10,21 +10,21 @@ from scipy import stats
 import datetime as dt
 import os, sys
 from dateutil.relativedelta import relativedelta
-from . import loading, combine, overflight, reg, avg
+from . import loading
 
 ############################################################################################################
 class lidarData:
     """ This is a class for loading and analyzing lidar data from a single day. """
 
-    def __init__(self, date, loc, rawdir, outdir, coopsDir, dataYest):
+    def __init__(self, date, loc, rawdir, outdir, coopsDir, dataYest, req_fileDir):
         self.date = dt.datetime.strftime(date, '%Y%m%d')
         self.td = date  # self.date in datetime
         self.yd = self.td - dt.timedelta(days=1)
         self.loc = loc  # Location - catalina ('cata') or harvest ('harv')
         self.rawDir = rawdir  # Directory with raw lidar data
         self.outDir = outdir  # Directory of output averaged data
+        self.req_fileDir = req_fileDir
         self.coopsDir = coopsDir  # Directory containing coops data
-        self.fileDir = os.path.dirname(os.path.realpath('__file__'))  # Location of this file
         self.dataYest = dataYest  # Data from previous day, if already loaded
         self.mark = True  # Mark for whether or not to write data
         self.main()  # Call averaging
@@ -83,7 +83,7 @@ class lidarData:
             r_amp = r_amp[ind_good]
             
             try:
-                file = open(os.path.join(self.fileDir, 'lidar_analysis_files', 'bias_' + str(self.loc) + '.txt'), 'r')
+                file = open(os.path.join(self.req_fileDir, 'bias_' + str(self.loc) + '.txt'), 'r')
             except IOError:
                 print('bias_' + str(self.loc) + '.txt is required. ')
                 sys.exit(0)
@@ -195,7 +195,7 @@ class lidarData:
         """ Function for looping through months of co-ops data files """
         tm = str(tm)  # final day being loaded
         try:
-            file = open(os.path.join(self.fileDir, 'lidar_analysis_files', 'lastcoopsmonth_' + str(self.loc) + '.txt'),
+            file = open(os.path.join(self.req_fileDir, 'lastcoopsmonth_' + str(self.loc) + '.txt'),
                         'r')
         except IOError:
             print('lastcoopsmonth_' + str(self.loc) + '.txt is required. ')
@@ -211,6 +211,6 @@ class lidarData:
             if a is None:
                 break
             lm_dt = lm_dt + relativedelta(months=1)
-        file = open(os.path.join(self.fileDir, 'lidar_analysis_files', 'lastcoopsmonth_' + str(self.loc) + '.txt'), 'w')
+        file = open(os.path.join(self.req_fileDir, 'lastcoopsmonth_' + str(self.loc) + '.txt'), 'w')
         file.write((lm_dt - relativedelta(months=1)).strftime('%Y%m'))
         file.close()
