@@ -13,7 +13,7 @@ from dateutil.relativedelta import relativedelta
 from . import loading
 
 ############################################################################################################
-class lidarData:
+class LidarData:
     """ This is a class for loading and analyzing lidar data from a single day. """
 
     def __init__(self, date, loc, rawdir, outdir, coopsDir, dataYest, req_fileDir):
@@ -37,13 +37,13 @@ class lidarData:
         print('-------------------------------------')
         print('Date:            ', self.td)
         if self.dataYest is None:
-            raw1 = loading.load_raw(self.yd, self.rawDir, self.loc)
+            raw1 = loading.load_raw(self.yd, self.rawDir)
             if raw1 is None:
                 raw1 = pd.DataFrame()
         else:
             raw1 = self.dataYest
             raw1.index = raw1.index - 24*60*60
-        raw2 = loading.load_raw(self.td, self.rawDir, self.loc)
+        raw2 = loading.load_raw(self.td, self.rawDir)
         if raw2 is None:
             print('Data file does not exist.')
             self.mark = False  # if there is no data file do not write anything

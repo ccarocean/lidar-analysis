@@ -27,11 +27,11 @@ def ovavg(ovfile, loc, outDir, rawdir):
         print(t)
         # Load LiDAR Data
         datamark = True
-        data = loading.load_raw(t, rawdir, loc)
+        data = loading.load_raw(t, rawdir)
         day_dt = (t - timedelta_2h)
         day = dt.datetime(day_dt.year, day_dt.month, day_dt.day)
         if (t - timedelta_2h).date() != t.date():  # If data will span current and previous day
-            data_before = loading.load_raw(t - dt.timedelta(days=1), rawdir, loc)
+            data_before = loading.load_raw(t - dt.timedelta(days=1), rawdir)
             if data is None and data_before is None:
                 print('No data for this overflight.')
                 datamark = False
@@ -40,7 +40,7 @@ def ovavg(ovfile, loc, outDir, rawdir):
                 data = pd.concat([data_before, data])
 
         elif (t + timedelta_2h).date() != t.date():  # if data will span current and next day
-            data_after = loading.load_raw(t + dt.timedelta(days=1), rawdir, loc)
+            data_after = loading.load_raw(t + dt.timedelta(days=1), rawdir)
             if data is None and data_after is None:
                 print('No LiDAR data for this overflight.')
                 datamark = False

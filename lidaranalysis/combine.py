@@ -3,6 +3,7 @@ import pandas as pd
 import datetime as dt
 from . import loading
 
+
 #################### Combine Data ##########################################################################
 def combinedata(loc, outDir, req_fileDir):
     """ Function for combining all LiDAR data into one csv file """
@@ -18,7 +19,7 @@ def combinedata(loc, outDir, req_fileDir):
 
     if loc == 'harv':
         bias = (data['l_mean'] - data['N1_1']).mean()
-    if loc == 'cata':
+    else:
         bias = (data['l_mean'] - data['A1']).mean()
 
     file = open(os.path.join(req_fileDir, 'bias_' + str(loc) + '.txt'), 'w')

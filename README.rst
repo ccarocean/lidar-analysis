@@ -18,6 +18,7 @@ optional arguments:
   -d DATE                               Single Date in YYYYMMDD format
   -l DAY                                Change last day run. Argument must be day in YYYYMMDD format
   -c DAY                                Change last coops month run. Argument must be month in YYYYMM format
+  --out
 
 Notes:
    - INPUT DATES MUST BE IN NUMERIC YYYYMMDD FORMAT
