@@ -21,7 +21,7 @@ def combinedata(loc, outDir, req_fileDir):
     if loc == 'cata':
         bias = (data['l_mean'] - data['A1']).mean()
 
-    file = open(os.path.join(req_fileDir, 'lidar_analysis_files', 'bias_' + str(loc) + '.txt'), 'w')
+    file = open(os.path.join(req_fileDir, 'bias_' + str(loc) + '.txt'), 'w')
     file.write(str(bias))
     file.close()
     print('Bias = ' + str(bias) + ' m' + ', Written to bias_' + str(loc) + '.txt')
