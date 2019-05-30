@@ -5,25 +5,38 @@ import sys
 from scipy import stats
 from dateutil.relativedelta import relativedelta
 from . import reg, loading
+import dateutil.parser as parser
 
 
 def ovavg(ovfile, loc, outDir, rawdir):
     """ This funcion finds LiDAR data at specific times inputted in a file. """
     print('-------------------------------------')
     print(ovfile)
-    ovflight_times = pd.read_csv(ovfile, names=['time'], parse_dates=True, index_col=0)
+    ovflight_times = pd.read_csv(ovfile, names=['date', 'time'], usecols=[0, 1], sep="\s+")
+    try:
+        ov_secs = [float(ovflight_times['date'][i]) for i in range(len(ovflight_times))]
+        J2000_flag = True
+    except (TypeError, ValueError):
+        J2000_flag = False
+
+    if J2000_flag:
+        J2000 = dt.datetime(2000, 1, 1, 12)
+        ovflight_times = [J2000 + dt.timedelta(seconds=i) for i in ov_secs]
+    else:
+        ovflight_times = [parser.parse(ovflight_times['date'][i] + " " + ovflight_times['time'][i]) for i in range(len(ovflight_times))]
+    print(ovflight_times)
     timedelta_2h = dt.timedelta(hours=2)
     timedelta_1100s = dt.timedelta(seconds=1100)
     for i in ovflight_times:
         if not isinstance(i, dt.date):
             print("""Incorrect Data Format:
                      Input must be vertical list of dates in standard format
-                     so that pandas date parser can detect type. """)
+                     so that dateutil date parser can detect type. """)
             sys.exit(0)
 
-    data_ov = ovflight_times
-    for t in ovflight_times.index:
-        t = t.to_pydatetime()
+    data_ov = pd.DataFrame({'time': ovflight_times})
+    data_ov.set_index('time', inplace=True, drop=True)
+    for t in ovflight_times:
         print(t)
         # Load LiDAR Data
         datamark = True

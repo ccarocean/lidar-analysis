@@ -22,7 +22,6 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-s', '--start', type=arg2dt, default=None, help='Start Date in YYYYMMDD format')
     parser.add_argument('-e', '--end', type=arg2dt, default=None, help='End Date in YYYYMMDD format')
-    parser.add_argument('-o', '--ovfile', type=str, default=None, help="File with overflight times.")
     parser.add_argument('-l', '--location', type=str, default=None,
                         help="Location ('harv' or 'cata'). Required for all but plotting option.")
     parser.add_argument('-f', '--full', action="store_true", default=None,
@@ -55,7 +54,6 @@ def main():
         else:
             outdir = args.out
         req_filedir = os.path.join(datafile, 'lidar_analysis_files')
-        ov_outfile = os.path.join(datafile, loc, 'lidardata_overflights.csv')
     if args.plot is True:
         plot_dir = os.path.join(datafile, 'plots')
 
@@ -98,16 +96,6 @@ def main():
             print('Input to new coops month must be a working month.')
             sys.exit(0)
         chng.chng_coops(args.coops, loc, req_filedir)
-        sys.exit(0)
-
-    # If overflight averaging is required
-    if args.ovfile is not None:
-        print('Reading Overflight Data from:', args.ovfile)
-        # Call overflight averaging function
-        ovdata = overflight.ovavg(args.ovfile, loc, outdir, rawdir)
-        ovdata.to_csv(ov_outfile, na_rep='NaN')
-        print('Writing Overflight Data to:', ov_outfile)
-        print('-------------------------------------')
         sys.exit(0)
 
     # If only one day is being run
