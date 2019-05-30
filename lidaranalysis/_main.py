@@ -6,7 +6,7 @@
 ############################################################################################################
 import datetime as dt
 import os
-from . import avg, combine, overflight, chng, plot
+from . import avg, combine, chng, plot
 import sys
 import argparse
 
@@ -46,16 +46,6 @@ def main():
 
     # Define directories
     datafile = os.getenv('LIDARDATAFILE', os.path.join('/', 'srv', 'data', 'harvest'))
-    if loc is not None:
-        rawdir = os.path.join(datafile, loc, 'uls')
-        coopsdir = os.path.join(datafile, loc, 'co-ops')
-        if args.out is None:
-            outdir = os.path.join(datafile, loc, 'six_minute')
-        else:
-            outdir = args.out
-        req_filedir = os.path.join(datafile, 'lidar_analysis_files')
-    if args.plot is True:
-        plot_dir = os.path.join(datafile, 'plots')
 
     # Initialize
     write_day = True
@@ -63,6 +53,7 @@ def main():
 
     # If plotting option is called
     if args.plot is True:
+        plot_dir = os.path.join(datafile, 'plots')
         datadir_harv = os.path.join(datafile, 'harv', 'six_minute')
         datadir_cata = os.path.join(datafile, 'cata', 'six_minute')
         # Find Date
@@ -75,6 +66,15 @@ def main():
         plot.plot_cata(td, data_c, plot_dir)
         plot.plot_corr(data_h, data_c, plot_dir)
         sys.exit(0)
+
+    # Filenames
+    rawdir = os.path.join(datafile, loc, 'uls')
+    coopsdir = os.path.join(datafile, loc, 'co-ops')
+    if args.out is None:
+        outdir = os.path.join(datafile, loc, 'six_minute')
+    else:
+        outdir = args.out
+    req_filedir = os.path.join(datafile, 'lidar_analysis_files')
 
     # If change last day option is called
     if args.lastday is not None:
