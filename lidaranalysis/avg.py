@@ -74,13 +74,13 @@ class LidarData:
             # indices of the raw data in a 6 minute interval around each final data point
             ind2 = (raw.index >= t1) & (raw.index <= t2)
             r_range = raw['range'][ind2]  # range in interval
-            r_amp = raw['amp'][ind2]  # amp in interval
+            r_rpw = raw['rpw'][ind2]  # received pulse width in interval
 
             std_int = np.std(r_range)  # find overall standard deviation
             mean_int = np.mean(r_range)  # find overall mean
             ind_good = ((np.abs(r_range - mean_int)) < (5 * std_int))
             r_range = r_range[ind_good]
-            r_amp = r_amp[ind_good]
+            r_rpw = r_rpw[ind_good]
             
             try:
                 file = open(os.path.join(self.req_fileDir, 'bias_' + str(self.loc) + '.txt'), 'r')
@@ -100,7 +100,7 @@ class LidarData:
                 data.loc[t, 'l_n'] = l_r
                 data.loc[t, 'l_min'] = np.min(r_range)
                 data.loc[t, 'l_max'] = np.max(r_range)
-                data.loc[t, 'l_amp'] = np.mean(r_amp)
+                data.loc[t, 'l_rpw'] = np.mean(r_rpw)
                 data.loc[t, 'l_Hs'] = 4 * data.loc[t, 'l_std']
                 data.loc[t, 'l'] = -data.loc[t, 'l_mean'] + bias
                 if self.loc == 'harv':
@@ -112,10 +112,10 @@ class LidarData:
     def createFile(self, data):
         """ Function for creating output averaging DataFrame for data to be saved in. """
         names_cata_saved = ['time', 'A1', 'A1_t1', 'A1_t2', 'B1', 'E1', 'F1', 'L1_1', 'L1_2', 'P6', 'U1',
-                            'W1', 'l', 'l_Hs', 'l_amp', 'l_max', 'l_mean', 'l_median', 'l_min', 'l_n', 'l_skew',
+                            'W1', 'l', 'l_Hs', 'l_rpw', 'l_max', 'l_mean', 'l_median', 'l_min', 'l_n', 'l_skew',
                             'l_std']
         names_harv_saved = ['time', 'D1', 'F1', 'L1_1', 'L1_2', 'N1_1', 'N1_1_ssh', 'N1_2', 'P6', 'U1', 'W1',
-                            'Y1_1', 'Y1_1_ssh', 'Y1_2', 'l', 'l_Hs', 'l_amp', 'l_max', 'l_mean', 'l_median', 'l_min',
+                            'Y1_1', 'Y1_1_ssh', 'Y1_2', 'l', 'l_Hs', 'l_rpw', 'l_max', 'l_mean', 'l_median', 'l_min',
                             'l_n', 'l_skew', 'l_ssh', 'l_std']
         timevec = []
         if self.loc == 'harv':

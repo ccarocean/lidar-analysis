@@ -56,12 +56,12 @@ def plot_harv(td, data_h, save_dir):
 
     # Plot All Harvest Pulse Width Data
     plt.figure(figsize=(12, 10), dpi=80, facecolor='w')
-    plt.plot(data_h.index, data_h['l_amp'], 'bo', markersize=3)
-    plt.title('All Harvest LIDAR Pulse Width Data')
+    plt.plot(data_h.index, data_h['l_rpw'], 'bo', markersize=3)
+    plt.title('All Harvest LIDAR Received Pulse Width Data')
     plt.xticks(rotation=90)
     plt.grid(b=True)
     plt.xlabel('Date')
-    plt.ylabel('Pulse Width')
+    plt.ylabel('Received Pulse Width')
     plt.savefig(os.path.join(save_dir, 'Harvest_PW.png'), bbox_inches='tight')
 
     # Plot all Harvest Height Data
@@ -119,12 +119,12 @@ def plot_cata(td, data_c, save_dir):
 
     # Plot Catalina Pulse Width Data
     plt.figure(figsize=(12, 10), dpi=80, facecolor='w')
-    plt.plot(data_c.index, data_c['l_amp'], 'ro', markersize=3)
-    plt.title('All Catalina LIDAR Pulse Width Data')
+    plt.plot(data_c.index, data_c['l_rpw'], 'ro', markersize=3)
+    plt.title('All Catalina LIDAR ReceivedPulse Width Data')
     plt.xticks(rotation=90)
     plt.grid(b=True)
     plt.xlabel('Date')
-    plt.ylabel('Pulse Width')
+    plt.ylabel('Received Pulse Width')
     plt.savefig(os.path.join(save_dir, 'Catalina_PW.png'), bbox_inches='tight')
 
     # Plot All Catalina Height Data
