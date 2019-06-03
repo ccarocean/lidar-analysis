@@ -135,8 +135,6 @@ def main():
     # If data is up to date
     if last_day < curr_day:
         print('Data is up to date. ')
-        if args.full is True:
-            combine.combinedata(loc, outdir, req_filedir)
         sys.exit(0)
 
     # Run loop over all days requested
