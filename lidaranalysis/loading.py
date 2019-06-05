@@ -74,10 +74,10 @@ def load_xzbin(f, dtype):
 def load_output(d, loc, outdir):
     """ Function to load output data. """
     names_cata_saved = ['time', 'A1', 'A1_t1', 'A1_t2', 'B1', 'E1', 'F1', 'L1_1', 'L1_2', 'P6', 'U1',
-                        'W1', 'l', 'l_Hs', 'l_rpw', 'l_max', 'l_mean', 'l_median', 'l_min', 'l_n', 'l_skew', 'l_std']
+                        'W1', 'l', 'l_Hs', 'l_max', 'l_mean', 'l_median', 'l_min', 'l_n', 'l_rpw', 'l_skew', 'l_std']
     names_harv_saved = ['time', 'D1', 'F1', 'L1_1', 'L1_2', 'N1_1', 'N1_1_ssh', 'N1_2', 'P6', 'U1', 'W1',
-                        'Y1_1', 'Y1_1_ssh', 'Y1_2', 'l', 'l_Hs', 'l_rpw', 'l_max', 'l_mean', 'l_median', 'l_min',
-                        'l_n', 'l_skew', 'l_ssh', 'l_std']
+                        'Y1_1', 'Y1_1_ssh', 'Y1_2', 'l', 'l_Hs', 'l_max', 'l_mean', 'l_median', 'l_min',
+                        'l_n', 'l_rpw', 'l_skew', 'l_ssh', 'l_std']
     f = os.path.join(outdir, loc + '_' + d.strftime('%Y%m') + '.csv')
     if loc == 'harv':
         try:
