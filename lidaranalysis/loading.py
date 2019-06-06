@@ -59,18 +59,6 @@ def load_xzbin(f, dtype):
         return None
 
 
-# def load_dat(f, rawdir):
-#     """ Function to load .dat file from LIDAR sensor. """
-#     if os.path.isfile(f):  # ensures file exists
-#         data = pd.read_csv(f, names=['time', 'range', 'rpw'], parse_dates=True, index_col=0, error_bad_lines=False)
-#         day = dt.datetime.strptime(f, rawdir + '/uls_%Y%m%d.dat.gz')  # gets day from filename
-#         data.index = [(i-day).total_seconds() for i in data.index]
-#         print('LiDAR Data loaded from:', f[-19:])
-#         return data
-#     else:
-#         return None
-
-
 def load_output(d, loc, outdir):
     """ Function to load output data. """
     names_cata_saved = ['time', 'A1', 'A1_t1', 'A1_t2', 'B1', 'E1', 'F1', 'L1_1', 'L1_2', 'P6', 'U1',

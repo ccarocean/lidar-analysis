@@ -46,12 +46,12 @@ def load_cata(datadir_cata):
 def plot_harv(td, data_h, save_dir):
     # Find Today's Data
     timedelt1 = dt.timedelta(days=1)
-    ind = (data_h.index >= td) & (data_h.index < (td + timedelt1))
+    ind = data_h.index >= td
     data_today_h = data_h[ind]
 
     # Find Week Data
     timedelt7 = dt.timedelta(days=7)
-    ind = (data_h.index >= (td - timedelt7)) & (data_h.index <= td)
+    ind = data_h.index >= (td - timedelt7)
     data_rec_h = data_h[ind]
 
     # Plot All Harvest Pulse Width Data
@@ -109,12 +109,12 @@ def plot_harv(td, data_h, save_dir):
 def plot_cata(td, data_c, save_dir):
     # Find Today's Data
     timedelt1 = dt.timedelta(days=1)
-    ind = (data_c.index >= td) & (data_c.index < (td + timedelt1))
+    ind = data_c.index >= td
     data_today_c = data_c[ind]
 
     # Find Week Data
     timedelt7 = dt.timedelta(days=7)
-    ind = (data_c.index >= (td - timedelt7)) & (data_c.index <= td)
+    ind = data_c.index >= (td - timedelt7)
     data_rec_c = data_c[ind]
 
     # Plot Catalina Pulse Width Data
@@ -160,8 +160,9 @@ def plot_cata(td, data_c, save_dir):
 
 def plot_corr(data_h, data_c, save_dir):
     # Plot harvest vs catalina scatter
+    hl = data_h['l_mean'][~data_h.index.duplicated()]
     plt.figure(figsize=(12, 10), dpi=80, facecolor='w')
-    plt.plot(data_h['l_mean'][data_c.index], data_c['l_mean'], 'bo')
+    plt.plot(hl[data_c.index], data_c['l_mean'], 'bo')
     plt.title('Scatter Harvest vs. Catalina')
     plt.xlim([6, 14])
     plt.ylim([0, 8])
@@ -172,7 +173,7 @@ def plot_corr(data_h, data_c, save_dir):
 
     # Plot harvest vs catalina scatter without outliers
     plt.figure(figsize=(12, 10), dpi=80, facecolor='w')
-    plt.plot(data_h['l_mean'][data_c.index], data_c['l_mean'], 'bo')
+    plt.plot(hl[data_c.index], data_c['l_mean'], 'bo')
     plt.title('Scatter Harvest vs. Catalina - No Outliers')
     plt.xlim([11, 14])
     plt.ylim([0.9, 4])
