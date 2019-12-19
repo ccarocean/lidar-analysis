@@ -73,8 +73,8 @@ class LidarData:
             
             # indices of the raw data in a 6 minute interval around each final data point
             ind2 = (raw.index >= t1) & (raw.index <= t2)
-            r_range = raw['range'][ind2]  # range in interval
-            r_rpw = raw['rpw'][ind2]  # received pulse width in interval
+            r_range = np.array(raw['range'][ind2])  # range in interval
+            r_rpw = np.array(raw['rpw'][ind2])  # received pulse width in interval
 
             if self.loc == 'cata':
                 m = np.median(r_range)
@@ -84,6 +84,7 @@ class LidarData:
                 std_int = np.std(r_range)  # find overall standard deviation
                 mean_int = np.mean(r_range)  # find overall mean
                 ind_good = ((np.abs(r_range - mean_int)) < (5 * std_int))
+
             r_range = r_range[ind_good]
             r_rpw = r_rpw[ind_good]
             
