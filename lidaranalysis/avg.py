@@ -76,9 +76,14 @@ class LidarData:
             r_range = raw['range'][ind2]  # range in interval
             r_rpw = raw['rpw'][ind2]  # received pulse width in interval
 
-            std_int = np.std(r_range)  # find overall standard deviation
-            mean_int = np.mean(r_range)  # find overall mean
-            ind_good = ((np.abs(r_range - mean_int)) < (5 * std_int))
+            if self.loc == 'cata':
+                m = np.median(r_range)
+                mad = 1.4826 * np.median(np.absolute(np.array([i - m for i in r_range])))
+                ind_good = np.where((r_range > (m - 6 * mad)) & (r_range < (m + 6 * mad)))[0]
+            else:
+                std_int = np.std(r_range)  # find overall standard deviation
+                mean_int = np.mean(r_range)  # find overall mean
+                ind_good = ((np.abs(r_range - mean_int)) < (5 * std_int))
             r_range = r_range[ind_good]
             r_rpw = r_rpw[ind_good]
             
@@ -123,7 +128,7 @@ class LidarData:
         if self.loc == 'cata':
             data_new = pd.DataFrame(columns=names_cata_saved)  # create DataFrame
         if data.index.empty:  # if the csv file does not exist yet
-            temp = self.td;  # start with the beginning of the current date being run
+            temp = self.td  # start with the beginning of the current date being run
             while temp < (self.td + dt.timedelta(days=1)):  # create lines every 6 minutes
                 timevec.append(temp)
                 temp = temp + dt.timedelta(minutes=6)
