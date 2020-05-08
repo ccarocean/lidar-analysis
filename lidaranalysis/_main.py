@@ -135,8 +135,13 @@ def main():
     # If data is up to date
     if last_day < curr_day:
         print('Data is up to date. ')
+        # Average most recent date
         dayClass = avg.LidarData(last_day, loc, rawdir, outdir, coopsdir, data_yest, req_filedir)
+        # Check co-ops data
         dayClass.coops(last_day.strftime('%Y%m'))
+        # If called, combine all data into one file
+        if args.full:
+            combine.combinedata(loc, outdir, req_filedir)
         sys.exit(0)
 
     # Run loop over all days requested
